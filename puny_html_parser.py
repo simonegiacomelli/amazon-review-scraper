@@ -17,14 +17,6 @@ class PunyHTMLParser(HTMLParser):
         self.last_element: Element = None
         self.parents = {}
 
-    @cached_property
-    def head(self):
-        raise NotImplemented()
-
-    @cached_property
-    def body(self):
-        raise NotImplemented()
-
     def handle_starttag(self, tag, attrs):
         di = {k: v for k, v in attrs}
 
@@ -44,14 +36,25 @@ class PunyHTMLParser(HTMLParser):
             self.last_element.text = data
 
     def handle_endtag(self, tag):
+        if tag in self.void_elements:
+            return
 
         while tag != self.last_element.tag:
-            parent = self.parents[self.last_element]
-            self.last_element = parent
+            self.rise_last_element()
+            self.assert_last_element_valid(tag)
 
-        if tag != self.last_element.tag:
-            raise Exception('-----------endtag=%s last_tag=%s' % (tag, self.last_element))
+        if tag == self.last_element.tag:
+            self.rise_last_element()
         else:
-            parent = self.parents[self.last_element]
-            self.last_element = parent
-        pass
+            raise Exception('-----------endtag=%s last_tag=%s' % (tag, self.last_element))
+
+    def assert_last_element_valid(self, tag):
+        if self.last_element is None:
+            raise Exception('tag=%s getpos=%s' % (tag, self.getpos()))
+
+    def rise_last_element(self):
+        self.last_element = self.parents[self.last_element]
+
+    def handle_startendtag(self, tag, attrs):
+        self.handle_starttag(tag, attrs)
+        self.handle_endtag(tag)
