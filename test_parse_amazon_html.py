@@ -35,13 +35,16 @@ class TestReviewPageParser(TestCase):
         self.assertEqual(actual_titles, expected_titles)
 
     def test_reviews_body(self):
-        r9 = self.target.reviews[9]
-        self.assertTrue(r9.body.strip().startswith('Do NOT buy this boo'), r9.body)
-        r0 = self.target.reviews[0]
-        self.assertTrue(r0.body.strip().startswith('I have just started to read this bo'), r0.body)
+        self.assert_review(index=9, startswith='Do NOT buy this boo')
+        self.assert_review(index=0, startswith='I have just started to read this bo')
+        self.assert_review(index=1, startswith='I stopped reading at the part wh')
         r1 = self.target.reviews[1]
-        self.assertTrue(r1.body.strip().startswith('I stopped reading at the part wh'), r1.body)
         self.assertTrue(r1.body.strip().endswith('by their bodies; and more.'), r1.body)
+
+    def assert_review(self, index, startswith):
+        r = self.target.reviews[index]
+        error_msg = 'String "%s..." do not start with [%s]' % (r.body[:len(startswith)], startswith)
+        self.assertTrue(r.body.strip().startswith(startswith), error_msg)
 
 
 class TestRemoveStringPortion(TestCase):
