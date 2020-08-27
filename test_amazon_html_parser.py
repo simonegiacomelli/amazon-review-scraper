@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from parse_amazon_html import ReviewPageParser, remove_string_portion, Review
+from amazon_html_parser import ReviewPageParser, remove_string_portion, Review
 
 
 class TestReviewPageParser(TestCase):
