@@ -7,32 +7,31 @@ from puny_html_parser import PunyHTMLParser, print_element
 
 class Review:
     def __init__(self):
-        self.title = None
+        self.title: str = None
+        self.body: str = None
 
 
 class ReviewPageParser:
     def __init__(self):
         super().__init__()
         self.parser = PunyHTMLParser()
-        self.reviews = []
+        self.reviews: List[Review] = []
 
     def feed(self, data):
         self.parser.feed(data)
 
-        reviews_div = [x for x in self.parser.document.findall('.//div') if
-                       x.attrib.get('id', '').startswith('customer_review-')]
-
+        reviews_div = [x for x in self.parser.document.findall(".//*[@data-hook='review']")]
         self.reviews = [self._div_to_review(div) for div in reviews_div]
 
-    def _div_to_review(self, div):
-        children: List[Element] = list(div)
-        div_title = children[1]
-
-        a_for_title = div_title.findall('.//a')
-        title_span = a_for_title[1].find('.//span')
-
+    def _div_to_review(self, review_element):
         review = Review()
+
+        title_span = review_element.find(".//*[@data-hook='review-title']/span")
         review.title = title_span.text
+
+        body_span = review_element.find(".//*[@data-hook='review-body']/span")
+        review.body = body_span.text
+
         return review
 
 

@@ -34,6 +34,12 @@ class TestReviewPageParser(TestCase):
 
         self.assertEqual(actual_titles, expected_titles)
 
+    def test_reviews_body(self):
+        r9 = self.target.reviews[9]
+        self.assertTrue(r9.body.strip().startswith('Do NOT buy this boo'), r9.body)
+        r0 = self.target.reviews[0]
+        self.assertTrue(r0.body.strip().startswith('I have just started to read this bo'), r0.body)
+
 
 class TestRemoveStringPortion(TestCase):
     def test_remove_simple_makers(self):
