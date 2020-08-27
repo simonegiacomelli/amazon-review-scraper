@@ -39,6 +39,9 @@ class TestReviewPageParser(TestCase):
         self.assertTrue(r9.body.strip().startswith('Do NOT buy this boo'), r9.body)
         r0 = self.target.reviews[0]
         self.assertTrue(r0.body.strip().startswith('I have just started to read this bo'), r0.body)
+        r1 = self.target.reviews[1]
+        self.assertTrue(r1.body.strip().startswith('I stopped reading at the part wh'), r1.body)
+        self.assertTrue(r1.body.strip().endswith('by their bodies; and more.'), r1.body)
 
 
 class TestRemoveStringPortion(TestCase):

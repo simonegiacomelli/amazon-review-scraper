@@ -32,6 +32,8 @@ class ReviewPageParser:
         body_span = review_element.find(".//*[@data-hook='review-body']/span")
         review.body = body_span.text
 
+        # date_span = review_element.find(".//*[@data-hook='review-date']")
+
         return review
 
 
