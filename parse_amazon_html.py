@@ -1,8 +1,7 @@
-from html.parser import HTMLParser
+from functools import cached_property
 from typing import List
-from xml.etree.ElementTree import Element, dump
 
-from puny_html_parser import PunyHTMLParser, print_element
+from puny_html_parser import PunyHTMLParser
 
 
 class Review:
@@ -10,6 +9,15 @@ class Review:
         self.original_date: str = None
         self.title: str = None
         self.body: str = None
+
+    @property
+    def date(self) -> str:
+        # sample original_date = 'Reviewed in the United States on November 16, 2018'
+        tmp = ' '.join(self.original_date.replace(',', '').split(' ')[-3:])
+        # tmp should be 'November 16 2018'
+        import datetime
+        result = datetime.datetime.strptime(tmp, '%B %d %Y').strftime('%Y-%m-%d')
+        return result
 
 
 class ReviewPageParser:

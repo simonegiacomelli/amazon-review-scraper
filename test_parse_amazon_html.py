@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from parse_amazon_html import ReviewPageParser, remove_string_portion
+from parse_amazon_html import ReviewPageParser, remove_string_portion, Review
 
 
 class TestReviewPageParser(TestCase):
@@ -73,3 +73,11 @@ class TestRemoveStringPortion(TestCase):
         content = 'hello -dear-Alice!'
         actual = remove_string_portion(content, '-', '-')
         self.assertEqual('hello Alice!', actual)
+
+
+class TestReview(TestCase):
+
+    def test_date(self):
+        target = Review()
+        target.original_date = 'Reviewed in the United States on November 16, 2018'
+        self.assertEqual('2018-11-16', target.date)
