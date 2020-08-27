@@ -81,3 +81,5 @@ class TestReview(TestCase):
         target = Review()
         target.original_date = 'Reviewed in the United States on November 16, 2018'
         self.assertEqual('2018-11-16', target.date)
+        target.original_date = 'Reviewed in the United States on August 11, 2019'
+        self.assertEqual('2019-08-11', target.date)
