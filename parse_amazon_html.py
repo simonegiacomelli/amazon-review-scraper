@@ -7,6 +7,7 @@ from puny_html_parser import PunyHTMLParser, print_element
 
 class Review:
     def __init__(self):
+        self.original_date: str = None
         self.title: str = None
         self.body: str = None
 
@@ -32,8 +33,8 @@ class ReviewPageParser:
         body_span = review_element.find(".//*[@data-hook='review-body']/span")
         review.body = body_span.text
 
-        # date_span = review_element.find(".//*[@data-hook='review-date']")
-
+        date_span = review_element.find(".//*[@data-hook='review-date']")
+        review.original_date = date_span.text
         return review
 
 

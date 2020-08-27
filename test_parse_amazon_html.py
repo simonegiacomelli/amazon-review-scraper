@@ -34,6 +34,22 @@ class TestReviewPageParser(TestCase):
 
         self.assertEqual(actual_titles, expected_titles)
 
+    def test_review_original_date(self):
+        expected_strings = ['Reviewed in the United States on November 16, 2018',
+                            'Reviewed in the United States on December 8, 2018',
+                            'Reviewed in the United States on February 11, 2019',
+                            'Reviewed in the United States on November 9, 2018',
+                            'Reviewed in the United States on October 17, 2018',
+                            'Reviewed in the United States on October 23, 2019',
+                            'Reviewed in the United States on August 16, 2019',
+                            'Reviewed in the United States on November 27, 2019',
+                            'Reviewed in the United States on October 14, 2018',
+                            'Reviewed in the United States on March 13, 2018']
+
+        actual_original_date = [r.original_date for r in self.target.reviews]
+
+        self.assertEqual(expected_strings, actual_original_date)
+
     def test_reviews_body(self):
         self.assert_review(index=9, startswith='Do NOT buy this boo')
         self.assert_review(index=0, startswith='I have just started to read this bo')
