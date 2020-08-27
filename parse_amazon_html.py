@@ -1,6 +1,8 @@
 from html.parser import HTMLParser
+from typing import List
+from xml.etree.ElementTree import Element, dump
 
-from puny_html_parser import PunyHTMLParser
+from puny_html_parser import PunyHTMLParser, print_element
 
 
 class Review:
@@ -12,60 +14,26 @@ class ReviewPageParser:
     def __init__(self):
         super().__init__()
         self.parser = PunyHTMLParser()
-        self.tag_count = 0
         self.reviews = []
 
     def feed(self, data):
         self.parser.feed(data)
-        reviews_div = [self.parser.document.findall('[div]')]
 
-        self.reviews = reviews_div
+        reviews_div = [x for x in self.parser.document.findall('.//div') if
+                       x.attrib.get('id', '').startswith('customer_review-')]
 
-    def handle_starttag(self, tag, attrs):
-        self.tag_count += 1
-        di = {k: v for k, v in attrs}
-        if tag == 'span' and self.title_coming:
-            self.start_pos = self.getpos()
-            return
+        self.reviews = [self._div_to_review(div) for div in reviews_div]
 
-        self.title_coming = tag == 'a' and di.get('data-hook', '') == 'review-title'
+    def _div_to_review(self, div):
+        children: List[Element] = list(div)
+        div_title = children[1]
 
-        if tag != 'div':
-            return
-        id: str = di.get('id', '')
-        if not id.startswith('customer_review-'):
-            return
-        self.review = Review()
-        self.reviews.append(self.review)
+        a_for_title = div_title.findall('.//a')
+        title_span = a_for_title[1].find('.//span')
 
-        if not ('data-hook', 'review') in attrs:
-            return
-        # print(attrs)
-        # di = {k: v for k, v in attrs}
-        # if 'data-src' not in di:
-        #     return
-        # data_src = str(di['data-src']).lower()
-        # if not data_src.endswith('_360.mp4'):
-        #     return
-        # self.start_pos = self.getpos()
-        # self.attrs = di
-
-    def handle_endtag(self, tag):
-        if self.title_coming and tag == 'span':
-            self.review.title = (self.start_pos, self.getpos())
-        pass
-
-        # print(f'END: {tag} pos:{self.getpos()}')
-        # if self.start_pos and tag == 'div':
-        #     self.locations.append((self.start_pos, self.getpos(), self.attrs))
-        #     self.start_pos = None
-
-    def unknown_decl(self, data):
-        print(f'ukn {data} pos:{self.getpos()}')
-
-    def handle_comment(self, data):
-        pass
-        # print(f'comment {data} pos:{self.getpos()}')
+        review = Review()
+        review.title = title_span.text
+        return review
 
 
 def remove_string_portion(content: str, start_marker: str, end_marker: str):

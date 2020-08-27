@@ -12,10 +12,6 @@ class TestReviewPageParser(TestCase):
             content = f.read()
         self.target = ReviewPageParser()
         self.target.feed(content)
-        print(self.target.tag_count)
-
-    def test_until_start(self):
-        self.assertGreater(self.target.tag_count, 50)
 
     def test_reviews_len_10(self):
         actual = len(self.target.reviews)
