@@ -6,10 +6,11 @@ from puny_html_parser import PunyHTMLParser
 
 class Review:
     def __init__(self):
-        self.original_date: str = None
+        self.id: str = None
         self.title: str = None
         self.body: str = None
         self.original_stars: str = None
+        self.original_date: str = None
 
     @property
     def date(self) -> str:
@@ -40,6 +41,8 @@ class ReviewPageParser:
 
     def _div_to_review(self, review_element):
         review = Review()
+
+        review.id = review_element.attrib.get('id', '')
 
         title_span = review_element.find(".//*[@data-hook='review-title']/span")
         review.title = title_span.text

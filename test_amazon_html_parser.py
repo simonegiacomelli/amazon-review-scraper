@@ -36,6 +36,22 @@ class TestReviewPageParser(TestCase):
 
         self.assertEqual(actual_titles, expected_titles)
 
+    def test_reviews_ids(self):
+        expected_ids = ['R3HPZCT5IDXOV0',
+                        'R3V3WQDDK3HGJ6',
+                        'R1DBGUZ44N7ML2',
+                        'R2AROV2XWDPV21',
+                        'RUYOQQNU2YPMY',
+                        'RYDYSSM210VTB',
+                        'R3KEKF49ZSBHDQ',
+                        'R2CLI6GTK6OBJ0',
+                        'RL3D1B5C9T3HZ',
+                        'RHCFT73ZBPGUS']
+
+        actual_ids = [r.id for r in self.target.reviews]
+
+        self.assertEqual(actual_ids, expected_ids)
+
     def test_review_original_date(self):
         expected_strings = ['Reviewed in the United States on November 16, 2018',
                             'Reviewed in the United States on December 8, 2018',
