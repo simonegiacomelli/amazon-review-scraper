@@ -9,6 +9,8 @@ class Review:
         self.id: str = None
         self.title: str = None
         self.body: str = None
+        self.product_title: str = None
+        self.product_link: str = None
         self.original_stars: str = None
         self.original_date: str = None
 
@@ -26,6 +28,12 @@ class Review:
         # sample original_stars = '5.0 out of 5 stars'
         return '%s/5' % self.original_stars[:1]
 
+    @property
+    def product_id(self) -> str:
+        parts = self.product_link.split('/')
+        dp_index = parts.index('dp')
+        return parts[dp_index + 1]
+
 
 class ReviewPageParser:
     def __init__(self):
@@ -35,12 +43,15 @@ class ReviewPageParser:
 
     def feed(self, data):
         self.parser.feed(data)
-
+        product_element = self.parser.document.find(".//*[@data-hook='product-link']")
         reviews_div = [x for x in self.parser.document.findall(".//*[@data-hook='review']")]
-        self.reviews = [self._div_to_review(div) for div in reviews_div]
+        self.reviews = [self._div_to_review(div, product_element) for div in reviews_div]
 
-    def _div_to_review(self, review_element):
+    def _div_to_review(self, review_element, product_element):
         review = Review()
+
+        review.product_title = product_element.text
+        review.product_link = product_element.attrib.get('href', '')
 
         review.id = review_element.attrib.get('id', '')
 

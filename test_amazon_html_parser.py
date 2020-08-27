@@ -52,6 +52,12 @@ class TestReviewPageParser(TestCase):
 
         self.assertEqual(actual_ids, expected_ids)
 
+    def test_reviews_product_title(self):
+        for review in self.target.reviews:
+            self.assertEqual('The 5 Love Languages: The Secret to Love that Lasts', review.product_title)
+            self.assertEqual('/Love-Languages-Secret-that-Lasts/dp/080241270X/ref=cm_cr_arp_d_product_top?ie=UTF8',
+                             review.product_link)
+
     def test_review_original_date(self):
         expected_strings = ['Reviewed in the United States on November 16, 2018',
                             'Reviewed in the United States on December 8, 2018',
@@ -125,3 +131,10 @@ class TestReview(TestCase):
         self.assertEqual('5/5', target.stars)
         target.original_stars = '2.0 out of 5 stars'
         self.assertEqual('2/5', target.stars)
+
+    def test_product_id(self):
+        target = Review()
+        target.product_link = '/Love-Languages-Secret-that-Lasts/dp/080241270X/ref=cm_cr_arp_d_product_top?ie=UTF8'
+        self.assertEqual('080241270X',target.product_id)
+        target.product_link = '/dp/080241270X/ref=cm_cr_arp_d_product_top?ie=UTF8'
+        self.assertEqual('080241270X',target.product_id)
