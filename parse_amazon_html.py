@@ -9,6 +9,7 @@ class Review:
         self.original_date: str = None
         self.title: str = None
         self.body: str = None
+        self.original_stars: str = None
 
     @property
     def date(self) -> str:
@@ -18,6 +19,11 @@ class Review:
         import datetime
         result = datetime.datetime.strptime(tmp, '%B %d %Y').strftime('%Y-%m-%d')
         return result
+
+    @property
+    def stars(self) -> str:
+        # sample original_stars = '5.0 out of 5 stars'
+        return '%s/5' % self.original_stars[:1]
 
 
 class ReviewPageParser:
@@ -43,6 +49,9 @@ class ReviewPageParser:
 
         date_span = review_element.find(".//*[@data-hook='review-date']")
         review.original_date = date_span.text
+
+        star_span = review_element.find(".//*[@data-hook='review-star-rating']/span")
+        review.original_stars = star_span.text
         return review
 
 

@@ -7,7 +7,9 @@ class TestReviewPageParser(TestCase):
     target = None
 
     def setUp(self) -> None:
-        filename = 'amazon.html'
+        self._load_file('amazon.html')
+
+    def _load_file(self, filename):
         with open(filename, 'r') as f:
             content = f.read()
         self.target = ReviewPageParser()
@@ -57,6 +59,23 @@ class TestReviewPageParser(TestCase):
         r1 = self.target.reviews[1]
         self.assertTrue(r1.body.strip().endswith('by their bodies; and more.'), r1.body)
 
+    def test_original_star_count(self):
+        self._load_file('amazon_mixed_stars.html')
+        expected_stars = ['5.0 out of 5 stars',
+                          '5.0 out of 5 stars',
+                          '5.0 out of 5 stars',
+                          '4.0 out of 5 stars',
+                          '1.0 out of 5 stars',
+                          '1.0 out of 5 stars',
+                          '1.0 out of 5 stars',
+                          '2.0 out of 5 stars',
+                          '1.0 out of 5 stars',
+                          '5.0 out of 5 stars']
+
+        actual_star_count = [r.original_stars for r in self.target.reviews]
+
+        self.assertEqual(expected_stars, actual_star_count)
+
     def assert_review(self, index, startswith):
         r = self.target.reviews[index]
         error_msg = 'String "%s..." do not start with [%s]' % (r.body[:len(startswith)], startswith)
@@ -83,3 +102,10 @@ class TestReview(TestCase):
         self.assertEqual('2018-11-16', target.date)
         target.original_date = 'Reviewed in the United States on August 11, 2019'
         self.assertEqual('2019-08-11', target.date)
+
+    def test_stars(self):
+        target = Review()
+        target.original_stars = '5.0 out of 5 stars'
+        self.assertEqual('5/5', target.stars)
+        target.original_stars = '2.0 out of 5 stars'
+        self.assertEqual('2/5', target.stars)
