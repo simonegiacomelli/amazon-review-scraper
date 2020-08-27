@@ -1,5 +1,5 @@
-from functools import cached_property
 from html.parser import HTMLParser
+from typing import Dict
 from xml.etree.ElementTree import Element, SubElement
 
 
@@ -58,3 +58,30 @@ class PunyHTMLParser(HTMLParser):
     def handle_startendtag(self, tag, attrs):
         self.handle_starttag(tag, attrs)
         self.handle_endtag(tag)
+
+
+def element_to_string(element: Element):
+    def dictionary_to_string(d: Dict):
+        space = '' if len(d) == 0 else ' '
+        return space + ' '.join(['%s="%s"' % (k, v) for k, v in d.items()])
+
+    def get_element_text(ele: Element):
+        return '' if ele.text is None else ele.text.replace('\n', '\\n')
+
+    res = []
+
+    def recurse(ele: Element, indent_spaces: int):
+        res.append('%s<%s%s>%s' % (' ' * indent_spaces,
+                                   ele.tag,
+                                   dictionary_to_string(ele.attrib),
+                                   get_element_text(ele)
+                                   ))
+        for child in list(ele):
+            recurse(child, indent_spaces + 2)
+
+    recurse(element, 0)
+    return '\n'.join(res)
+
+
+def print_element(element: Element):
+    print(element_to_string(element))
