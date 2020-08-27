@@ -33,7 +33,7 @@ class PunyHTMLParser(HTMLParser):
 
     def handle_data(self, data):
         if self.last_element is not None:
-            self.last_element.text = data
+            self.last_element.text = str(self.last_element.text or '') + data
 
     def handle_endtag(self, tag):
         if tag in self.void_elements:
