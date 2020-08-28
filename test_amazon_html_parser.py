@@ -1,9 +1,9 @@
 from unittest import TestCase
 
-from amazon_html_parser import ReviewPageParser, remove_string_portion, Review
+from amazon_html_parser import AmazonHTMLParser, remove_string_portion, Review
 
 
-class TestReviewPageParser(TestCase):
+class TestAmazonHTMLParser(TestCase):
     target = None
 
     def setUp(self) -> None:
@@ -12,7 +12,7 @@ class TestReviewPageParser(TestCase):
     def _load_file(self, filename):
         with open(filename, 'r') as f:
             content = f.read()
-        self.target = ReviewPageParser()
+        self.target = AmazonHTMLParser()
         self.target.feed(content)
 
     def test_reviews_len_10(self):

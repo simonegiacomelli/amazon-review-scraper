@@ -35,7 +35,7 @@ class Review:
         return parts[dp_index + 1]
 
 
-class ReviewPageParser:
+class AmazonHTMLParser:
     def __init__(self):
         super().__init__()
         self.parser = PunyHTMLParser()
