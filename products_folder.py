@@ -23,6 +23,6 @@ class ProductsFolder:
     def groups(self):
         return [Group(self.folder, n) for n in sorted(os.listdir(self.folder))]
 
-    def products_for_group_name(self, group_name):
+    def group_by_name(self, group_name):
         res = Group(self.folder, group_name)
-        return res.products
+        return res

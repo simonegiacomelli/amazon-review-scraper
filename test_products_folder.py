@@ -14,9 +14,9 @@ class TestProductsFolder(TestCase):
 
     def test_products_for_group(self):
         expected = ['amazonProductId1--product-title-1', 'amazonProductId2--product-title-2']
-        actual = self.target.products_for_group_name('group1')
+        actual = self.target.group_by_name('group1').products
         self.assertEqual(expected, actual)
 
         expected = []
-        actual = self.target.products_for_group_name('group2')
+        actual = self.target.group_by_name('group2').products
         self.assertEqual(expected, actual)
