@@ -36,3 +36,11 @@ class TestProductsFolder(TestCase):
         expected = ['one_star', 'two_star', 'three_star', 'four_star', 'five_star']
         actual = [s.name for s in product1.all_stars]
         self.assertEqual(expected, actual)
+
+    def test_star_folder_name_reverse_order(self):
+        group1 = self.target.group_by_name('group1')
+        product1 = group1.product_by_name('amazonProductId1--product-title-1')
+
+        expected = ['five_star', 'four_star', 'three_star', 'two_star', 'one_star']
+        actual = [s.name for s in reversed(product1.all_stars)]
+        self.assertEqual(expected, actual)
