@@ -7,7 +7,7 @@ class TestAmazonHTMLParser(TestCase):
     target = None
 
     def setUp(self) -> None:
-        self._load_file('amazon.html')
+        self._load_file('test_html/amazon.html')
 
     def _load_file(self, filename):
         with open(filename, 'r') as f:
@@ -82,7 +82,7 @@ class TestAmazonHTMLParser(TestCase):
         self.assertTrue(r1.body.strip().endswith('by their bodies; and more.'), r1.body)
 
     def test_original_star_count(self):
-        self._load_file('amazon_mixed_stars.html')
+        self._load_file('test_html/amazon_mixed_stars.html')
         expected_stars = ['5.0 out of 5 stars',
                           '5.0 out of 5 stars',
                           '5.0 out of 5 stars',
