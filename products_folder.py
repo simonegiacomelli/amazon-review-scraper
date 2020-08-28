@@ -9,7 +9,7 @@ class Group:
         self.group_folder = folder / name
 
     @property
-    def products(self):  # rename to all_products
+    def all_products(self):
         listdir = [p for p in os.listdir(self.group_folder)
                    if not p.startswith('.') and (self.group_folder / p).is_dir()]
         return sorted(listdir)
@@ -25,10 +25,16 @@ class Product:
 
     @property
     def all_stars(self):
-        return [0] * 5
+        all = ['one_star', 'two_star', 'three_star', 'four_star', 'five_star']
+        return [Star(n) for n in all]
 
 
-class ProductsFolder:
+class Star:
+    def __init__(self, name):
+        self.name = name
+
+
+class AllProducts:
     def __init__(self, folder='products'):
         self.folder: Path = Path(folder)
 
