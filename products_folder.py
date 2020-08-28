@@ -21,7 +21,7 @@ class ProductsFolder:
 
     @property
     def groups(self):
-        return [Group(self.folder, n) for n in sorted(os.listdir(self.folder))]
+        return [self.group_by_name(n) for n in sorted(os.listdir(self.folder))]
 
     def group_by_name(self, group_name):
         res = Group(self.folder, group_name)
