@@ -23,6 +23,21 @@ I wrote a quick and dirty Google doc to gather some graph and result
 
 https://docs.google.com/document/d/1XksYGfOsXmT0cAdstEEnCKN418vf3E9S3yp-TE9ZUZU
 
+Dependencies
+------------
+Expand and explain:
+
+
+```
+pip install webdriver
+```
+
+The scraping process uses [Selenium webdriver](https://www.selenium.dev/projects/) 
+
+And [gecko driver](https://github.com/mozilla/geckodriver/releases) for driving Firefox 
+
+
+
 Thanks
 ------
 
