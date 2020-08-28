@@ -9,13 +9,14 @@ class TestProductsFolder(TestCase):
         self.target = ProductsFolder(folder='test_files/products_structure')
 
     def test_groups(self):
-        self.assertEqual(['group1', 'group2'], self.target.groups)
+        actual = [g.name for g in self.target.groups]
+        self.assertEqual(['group1', 'group2'], actual)
 
     def test_products_for_group(self):
         expected = ['amazonProductId1--product-title-1', 'amazonProductId2--product-title-2']
-        actual = self.target.products_for_group('group1')
+        actual = self.target.products_for_group_name('group1')
         self.assertEqual(expected, actual)
 
         expected = []
-        actual = self.target.products_for_group('group2')
+        actual = self.target.products_for_group_name('group2')
         self.assertEqual(expected, actual)
