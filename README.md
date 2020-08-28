@@ -16,6 +16,12 @@ The development of the Amazon reviews html parser was conducted using TDD; that'
 
 I did not made tests for the scraper code.
 
+Output and results
+==================
+
+I wrote a quick and dirty Google doc to gather some graph and result
+
+https://docs.google.com/document/d/1XksYGfOsXmT0cAdstEEnCKN418vf3E9S3yp-TE9ZUZU
 
 Thanks
 ======
