@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from products_folder import AllProducts
+from products_folder import AllProducts, BaseFolder
 
 
 class TestProductsFolder(TestCase):
@@ -44,3 +44,15 @@ class TestProductsFolder(TestCase):
         expected = ['five_star', 'four_star', 'three_star', 'two_star', 'one_star']
         actual = [s.name for s in reversed(product1.all_stars)]
         self.assertEqual(expected, actual)
+
+
+class TestBaseFolder(TestCase):
+
+    def test_path(self):
+        target = BaseFolder('a/b')
+        self.assertEqual('a/b', target.path)
+
+    def test_path__for_nested_basefolder(self):
+        base = BaseFolder('a/b')
+        target = BaseFolder('c', base)
+        self.assertEqual('a/b/c', target.path)

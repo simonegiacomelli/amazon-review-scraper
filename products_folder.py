@@ -45,3 +45,13 @@ class AllProducts:
     def group_by_name(self, group_name) -> Group:
         res = Group(self.folder, group_name)
         return res
+
+
+class BaseFolder:
+    def __init__(self, folder, base=None):
+        self.folder = folder
+        self.base: BaseFolder = base
+
+    @property
+    def path(self):
+        return self.folder if self.base is None else self.base.path + '/' + self.folder
